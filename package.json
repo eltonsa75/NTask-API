@@ -14,7 +14,10 @@
     "body-parser": "^1.15.0",
     "consign": "^0.1.2",
     "express": "^4.17.1",
+    "jwt-simple": "^0.4.1",
     "node-sass": "^4.13.0",
+    "passport": "^0.3.2",
+    "passport-jwt": "^2.0.0",
     "sequelize": "^3.9.0",
     "sqlite3": "^4.1.0"
   }
