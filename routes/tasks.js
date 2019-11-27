@@ -2,10 +2,6 @@ module.exports = app => {
     const Tasks = app.db.models.Tasks;
 
     app.route("/tasks")
-        .all((req, res, next) => {
-        delete req.body.id;
-        next();
-    })
         .get((req, res) => {
             Tasks.findAll({})
             .then(result => res.json(result))
@@ -22,24 +18,35 @@ module.exports = app => {
         })
     app.route("/tasks/:id")
         .all((req, res, next) => {
-            // Middleware de pré-execução das rotas
             delete req.body.id;
             next();
         })
         .get((req, res, next) => {
-            // "/tasks/1": consulta uma tarefa  
-            delete req.body.id;
-            next();
+            Tasks.findOne({where: req.params})
+            .then(result => {
+                if (result) {
+                    res.json(result);
+                } else {
+                    res.sendStatus(404);
+                }
+            })
+            .catch(error => {
+                res.status(412).json({msg: error.message});
+            });
         })
-        .put((req, res, next) => {
-            // "/tasks/1": Atualiza uma tarefa
-            delete req.body.id;
-            next();
+        .put((req, res) => {
+            Tasks.update(req.body, {where: req.params})
+            .then(result => res.sendStatus(204))
+            .catch(error => {
+                res.status(412).json({msg: error.message});
+            });           
         })
         .delete((req, res, next) => {
-            // "/tasks/1": Excluir uma tarefa
-            delete req.body.id
-            next();
+           Tasks.destroy({where: req.params})
+           .then(result => res.sendStatus(204))
+           .catch(error => {
+               res.status(412).json({msg: error.message});
+           });
         });
 };
 
