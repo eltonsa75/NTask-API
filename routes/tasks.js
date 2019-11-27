@@ -3,20 +3,23 @@ module.exports = app => {
 
     app.route("/tasks")
         .all((req, res, next) => {
-        // Middleware de pré-execução das rotas
         delete req.body.id;
         next();
     })
-        .get((req, res, next) => {
-        // "/tasks": Lista tarefas
-        delete req.body.id;
-        next();
+        .get((req, res) => {
+            Tasks.findAll({})
+            .then(result => res.json(result))
+            .catch(error => {
+                res.status(412).json({msg: error.message});
+            });
     })
-        .post((req, res, next) => {
-            // "/tasks": Cadastra uma nova tarefa
-            delete req.body.id;
-            next();
-        });
+        .post((req, res) => {
+            Tasks.create(req.body)
+            .then(result => res.json(result))
+            .catch(error => {
+                res.status(412).json({msg: error.message});
+            });
+        })
     app.route("/tasks/:id")
         .all((req, res, next) => {
             // Middleware de pré-execução das rotas
