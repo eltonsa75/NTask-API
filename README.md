@@ -16,7 +16,7 @@ Criar testes automatizados é algo largamente adotado no desenvolvimento de sist
 2) Funcional
 3) Aceitação
 
-================================
+===============================================================
 
 Teste no estilo TDD;
 Testes no estilo BDD;
